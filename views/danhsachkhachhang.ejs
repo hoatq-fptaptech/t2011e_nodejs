@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <%- include("head.ejs");%>
+</head>
+<body>
+<%- include("header.ejs") %>
+<h1>Đây là danh sách khách hàng</h1>
+<ul>
+    <%
+    // cho nay viet code js  va dung duoc bien ds
+        for(var i=0;i<ds.length;i++){
+            // day la cho can nap <li> ra de in tung khach hang
+    %>
+        <li><%= ds[i].Ten %></li>
+    <%
+        }
+    %>
+</ul>
+</body>
+</html>
