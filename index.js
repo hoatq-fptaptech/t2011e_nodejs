@@ -87,3 +87,27 @@ app.get("/tim-kiem-hang-hoa",function (req,res) {
         });
     }
 });
+app.get("/chi-tiet-khach-hang",function (req,res) {
+    var dienthoai = req.query.dienthoai;
+    var txt_sql = "select * from KhachHang where DienThoai like '"+dienthoai+"'";
+    sql.query(txt_sql,function (err,rows) {
+        if(err) res.send("Khong co khach hang nao ca");
+        else{
+            if(rows.recordset.length > 0){
+                var kh = rows.recordset[0];
+                var txt_sql2 = "select * from DonHang where DienThoai like '"+dienthoai+"'";
+                sql.query(txt_sql2,function (err2,rows2) {
+                    if(err2) res.send("Khong co khach hang nao ca");
+                    else {
+                        res.render("chitietkhachhang",{
+                            kh:kh,
+                            dsdh:rows2.recordset
+                        })
+                    }
+                })
+            }else {
+                res.send("Khong co khach hang nao ca");
+            }
+        }
+    })
+});

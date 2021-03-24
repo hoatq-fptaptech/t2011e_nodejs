@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <%- include("head.ejs"); %>
+</head>
+<body>
+<section class="col-md-12">
+    <div class="container">
+        <h1>Ten KH: <%= kh.Ten %></h1>
+        <h2>Dien thoai: <%= kh.DienThoai %></h2>
+        <h2>Dia chi: <%= kh.DiaChi %></h2>
+        <h2>Những đơn hàng đã mua:</h2>
+        <table class="table">
+            <thead>
+            <th>Mã số</th>
+            <th>Ngày đặt</th>
+            <th>Tổng tiền</th>
+            </thead>
+            <tbody>
+                <% var tt = 0; %>
+                <% dsdh.forEach(function (e) { tt+=e.TongTien; %>
+                    <tr>
+                        <td><%= e.MaSo %></td>
+                        <td><%= e.NgayDat %></td>
+                        <td><%= e.TongTien %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <h3>Tổng số tiền đã mua tại cửa hàng: <%= tt %></h3>
+    </div>
+</section>
+</body>
+</html>
