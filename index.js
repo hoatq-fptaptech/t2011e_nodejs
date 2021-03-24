@@ -22,7 +22,24 @@ mssql.connect(config,function (err) {
 const sql = new mssql.Request();
 // tao 1 routing
 app.get("/",function (req,res) {
-    res.send("xin chao");
+    var txt_sql = "select * from KhachHang;" +
+        "select * from DonHang;select * from HangHoa;";
+    sql.query(txt_sql,function (err,rows) {
+        if(err){
+            res.render("home",{
+               dskh:[],
+               dsdh:[],
+               dshh:[]
+            })
+        }else{
+            res.render("home",{
+                dskh:rows.recordsets[0],
+                dsdh:rows.recordsets[1],
+                dshh:rows.recordsets[2],
+            })
+        }
+    })
+    //res.send("xin chao");
 });
 // khai bao web se dung view engine la ejs
 app.set("view engine","ejs");
@@ -55,13 +72,18 @@ app.get("/danh-sach-hang-hoa",function (req,res) {
 // tao 1 routing chuyen dua ra danh sach hang hoa
 app.get("/tim-kiem-hang-hoa",function (req,res) {
     var thamsoxyz = req.query.tentimkiem;
-    var ds = [];
-    var txt_sql = "select * from HangHoa where Ten like N'%"+
-        thamsoxyz+"%' OR MoTa like N'%"+thamsoxyz+"%'";
-    sql.query(txt_sql,function (err,rows) {
-        if(err) ds = ["Khong co hang hoa nao ca"];
-        else ds = rows.recordset;
-        res.send(ds);
-    });
-    // res.send(ds);
+    if(thamsoxyz == undefined){
+        res.render("timkiem",{ds:[]});
+    }else{
+        var ds = [];
+        var txt_sql = "select * from HangHoa where Ten like N'%"+
+            thamsoxyz+"%' OR MoTa like N'%"+thamsoxyz+"%'";
+        sql.query(txt_sql,function (err,rows) {
+            if(err) ds = ["Khong co hang hoa nao ca"];
+            else ds = rows.recordset;
+            res.render("timkiem",{
+                ds:ds
+            });
+        });
+    }
 });
