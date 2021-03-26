@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <%- include("head.ejs"); %>
+</head>
+<body>
+    <div class="container">
+        <ul>
+            <li>Mã số đơn hàng: <%= dh.MaSo %></li>
+            <li>Người đặt: <%= dh.Ten!=null?dh.Ten:"Khách vãng lai" %></li>
+            <li>Địa chỉ: <%= dh.DiaChi %></li>
+            <li>Ngày đặt: <%= dh.NgayDat %></li>
+        </ul>
+        <h3>Danh sách hàng hóa</h3>
+        <table class="table">
+            <thead>
+                <th>STT</th>
+                <th>Tên hàng</th>
+                <th>Mô tả</th>
+                <th>Đơn vị</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+            </thead>
+            <tbody>
+                <% var i=0; %>
+                <% ds.forEach(function (e) { i++; %>
+                    <tr>
+                        <td><%= i %></td>
+                        <td><%= e.Ten %></td>
+                        <td><%= e.MoTa %></td>
+                        <td><%= e.DonVi %></td>
+                        <td><%= e.Gia %></td>
+                        <td><%= e.SoLuong %></td>
+                        <td><%= e.ThanhTien %></td>
+                    </tr>
+                <% }) %>
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Tổng tiền</td>
+                    <td><%= dh.TongTien %></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

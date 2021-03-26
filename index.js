@@ -111,3 +111,54 @@ app.get("/chi-tiet-khach-hang",function (req,res) {
         }
     })
 });
+// chi tiet don hang
+app.get("/chi-tiet-don-hang-old",function (req,res) {
+    var ms = req.query.maso;
+    var txt_sql = "select A.*,B.Ten,B.DiaChi from DonHang A left join KhachHang B on" +
+        " B.DienThoai = A.DienThoai where A.MaSo = "+ms;
+    sql.query(txt_sql,function (err,rows) {
+       if(err) res.send("KHong co don hang nao ca");
+       else{
+           var ds = rows.recordset;
+           if(ds.length>0){
+               var dh = ds[0];
+               var txt_sql2 = "select B.Ten,B.MoTa,B.DonVi,B.Gia,A.SoLuong,A.ThanhTien" +
+                   " from DonHangHangHoa A " +
+                   "inner join HangHoa B on A.HHId = B.Id where A.MaSoDH = "+ms;
+               sql.query(txt_sql2,function (err2,rows2) {
+                    if(err2)   res.send("KHong co don hang nao ca");
+                    else{
+                        res.render("chitietdonhang",{
+                            dh:dh,
+                            ds:rows2.recordset
+                        })
+                    }
+               })  ;
+           }else{
+               res.send("KHong co don hang nao ca");
+           }
+       }
+    });
+});
+
+// lam theo async await
+app.get("/chi-tiet-don-hang",async function (req,res) {
+    var ms = req.query.maso;
+    var txt_sql = "select A.*,B.Ten,B.DiaChi from DonHang A left join KhachHang B on" +
+        " B.DienThoai = A.DienThoai where A.MaSo = "+ms;
+    try {
+        var kq1 = await sql.query(txt_sql);
+        var dh = kq1.recordset[0];
+        var txt_sql2 = "select B.Ten,B.MoTa,B.DonVi,B.Gia,A.SoLuong,A.ThanhTien" +
+            " from DonHangHangHoa A " +
+            "inner join HangHoa B on A.HHId = B.Id where A.MaSoDH = "+ms;
+        var kq2 = await sql.query(txt_sql2);
+        res.render("chitietdonhang",{
+            dh:dh,
+            ds:kq2.recordset
+        })
+    }catch (e) {
+        res.send("KHong co don hang nao ca");
+    }
+
+})

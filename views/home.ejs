@@ -30,6 +30,7 @@
                 <th>Ngày đặt</th>
                 <th>Tổng tiền</th>
                 <th>Điện thoại</th>
+                <th></th>
                 </thead>
                 <tbody>
                     <% dsdh.forEach(function (e) { %>
@@ -38,6 +39,7 @@
                             <td><%= e.NgayDat %></td>
                             <td><%= e.TongTien %></td>
                             <td><%= e.DienThoai %></td>
+                            <td><a href="/chi-tiet-don-hang?maso=<%= e.MaSo %>">Chi tiết</a> </td>
                         </tr>
                     <% }) %>
                 </tbody>
